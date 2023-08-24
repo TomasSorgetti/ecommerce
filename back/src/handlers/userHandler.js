@@ -1,20 +1,42 @@
-// const {
-//   postUser,
-//   getUserById,
-//   loginUser,
-// } = require("../controllers/userControllers");
+const { SECRET } = process.env;
+const {
+  createUser,
+  loginUser,
+  getUser,
+} = require("../controllers/userController");
 
-//*************create user and login***************//
-const userLoginHandler = async (req, res) => {
-    console.log("userLogin");
+//************* Create User ***************//
+const postUserHandler = async (req, res) => {
+  try {
+    const response = await createUser(req.body);
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 };
 
-const postUserHandler = async (req, res) => {
-    console.log("userCreate");
+//************* Login User ***************//
+const userLoginHandler = async (req, res) => {
+  try {
+      const response = await loginUser(req.body);
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
 
+const getUserById = async (req, res) => {
+  const { userId } = req;
+  try {
+    const response = await getUser(userId);
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 };
 
 module.exports = {
   postUserHandler,
   userLoginHandler,
+  getUserById,
 };
