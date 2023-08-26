@@ -1,13 +1,13 @@
 import {Routes, Route} from "react-router-dom"
 import Home from "../src/pages/Home/Home"
-import CreateUser from "./pages/Login/Create/CreateUser";
+import Login from "./pages/Login/Login";
+
+
 function App() {
-
-
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/createUser" element={<CreateUser/>} />
+      <Route path="/login" element={<Login/>} />
     </Routes>
   );
 }
