@@ -2,8 +2,11 @@ import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Form from "react-bootstrap/Form";
 import { useState } from "react";
 import validate from "./Validation";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-const CreateUser = () => {
+const CreateUser = ({ activeChange }) => {
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     name: "",
     lastname: "",
@@ -24,8 +27,22 @@ const CreateUser = () => {
     setForm({ ...form, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const URL = "http://localhost:3001/user";
+    if (form.name && form.lastname && form.email && form.password && form.repeatPassword && errors.name ==="" && errors.lastname ==="" && errors.email ==="" && errors.password ==="" && errors.repeatPassword ==="") {
+      try {
+        const res = await axios.post(URL, form);
+        if (res.status !== 200) throw "Error al crear usuario";
+        const token = res.data.token;
+        localStorage.setItem("token", token);
+        if (typeof token === "string") {
+          navigate("/");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
   };
   return (
     <form
@@ -45,9 +62,7 @@ const CreateUser = () => {
                 name="name"
               />
             </FloatingLabel>
-            {errors.name !== "" && (
-              <span className="">{errors.name}</span>
-            )}
+            {errors.name !== "" && <span className="">{errors.name}</span>}
           </div>
           <div className="relative">
             <FloatingLabel controlId="floatingInput" label="Apellido">
@@ -114,8 +129,14 @@ const CreateUser = () => {
               </span>
             )}
           </div>
+          <span>
+            ¿Ya tienes cuenta?
+            <button onClick={activeChange}>Entra</button>
+          </span>
         </div>
-        <button className="px-6 py-2 bg-blue-500 rounded" type="submit">Enviar</button>
+        <button className="px-6 py-2 bg-blue-500 rounded" type="submit">
+          Enviar
+        </button>
       </div>
     </form>
   );

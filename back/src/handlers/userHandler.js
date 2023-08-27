@@ -26,7 +26,7 @@ const userLoginHandler = async (req, res) => {
 };
 
 const getUserById = async (req, res) => {
-  const { userId } = req;
+  const userId = req.userId;
   try {
     const response = await getUser(userId);
     res.status(200).json(response);

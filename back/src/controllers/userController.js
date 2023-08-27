@@ -20,7 +20,7 @@ const createUser = async ({ name, lastname, email, password }) => {
     const token = jwt.sign({ id: adminUser.id, role: adminUser.role }, SECRET, {
       expiresIn: "1y",
     });
-    return { token, id: adminUser.id, role: adminUser.role };
+    return { token, role: adminUser.role };
   }
   const userCreated = await user.create({ name, lastname, email, password });
   const token = jwt.sign(
@@ -30,7 +30,7 @@ const createUser = async ({ name, lastname, email, password }) => {
       expiresIn: "1y",
     }
   );
-  return { token, id: userCreated.id, role: userCreated.role };
+  return { token, role: userCreated.role };
 };
 
 
